@@ -1,0 +1,52 @@
+[
+    {
+      "title": "Supergirl",
+      "description": "Supergirl is about a Kryptonian warrior who fights for truth and justice on Earth.",
+      "image_url": "http://localhost:8000/images/supergirl.jpg"
+    },
+    {
+      "title": "Surfer King",
+      "description": "Surfer King tells the story of a man’s journey to find meaning and connection in his surfing community.",
+      "image_url": "http://localhost:8000/images/surfer_king.jpg"
+    },
+    {
+      "title": "Surrogates",
+      "description": "Surrogates is a sci-fi film that delves into a world where humans live in isolation and interact through surrogate robots.",
+      "image_url": "http://localhost:8000/images/surrogates.jpg"
+    },
+    {
+      "title": "Suspect Zero",
+      "description": "Suspect Zero is a thriller about a special agent tracking a serial killer.",
+      "image_url": "http://localhost:8000/images/suspect_zero.jpg"
+    },
+    {
+      "title": "Sweeney Todd",
+      "description": "Sweeney Todd is a musical about a barber seeking revenge in 19th-century London.",
+      "image_url": "http://localhost:8000/images/sweeney_todd.jpg"
+    },
+    {
+      "title": "Sweet Hereafter",
+      "description": "The Sweet Hereafter is a drama about the impact of a tragic accident on a small town.",
+      "image_url": "http://localhost:8000/images/sweet_hereafter.jpg"
+    },
+    {
+      "title": "Sweet Smell of Success",
+      "description": "Sweet Smell of Success explores the dark side of fame and power in New York City.",
+      "image_url": "http://localhost:8000/images/sweet_smell_of_success.jpg"
+    },
+    {
+      "title": "Swingers",
+      "description": "Swingers is a comedy-drama about a group of friends navigating the dating scene in Los Angeles.",
+      "image_url": "http://localhost:8000/images/swingers.jpg"
+    },
+    {
+      "title": "Swordfish",
+      "description": "Swordfish is an action-packed film about a skilled hacker recruited for a high-stakes heist.",
+      "image_url": "http://localhost:8000/images/swordfish.jpg"
+    },
+    {
+      "title": "Synecdoche, New York",
+      "description": "Synecdoche, New York is a complex drama about an artist struggling to create a life-size replica of New York City.",
+      "image_url": "http://localhost:8000/images/synecdoche_new_york.jpg"
+    }
+]
