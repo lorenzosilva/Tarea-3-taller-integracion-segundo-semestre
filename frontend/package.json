@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://your-username.github.io/movie-find",
   "dependencies": {
     "@heroicons/react": "^2.1.5",
     "@tailwindcss/forms": "^0.5.9",
