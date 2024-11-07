@@ -15,7 +15,7 @@ const App = () => {
   const [responses, setResponses] = useState([]); // Cambiado de una sola respuesta a un array para chat
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
-  const [relatedMovie, setRelatedMovie] = useState(null);
+  const [relatedMovie] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [conversationHistory, setConversationHistory] = useState([]); // Nuevo estado para el historial de conversación
   const [errorMessage, setErrorMessage] = useState(null); // Nuevo estado para mensajes de error
