@@ -29,7 +29,7 @@ app = FastAPI()
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://672d5618ed6edb8f8a9884c6--pregunta-peliculas.netlify.app"],  # Adjust if deploying to a different domain
+    allow_origins=["https://672d5618ed6edb8f8a9884c6--pregunta-peliculas.netlify.app", "https://pregunta-peliculas.netlify.app"],  # Adjust if deploying to a different domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
