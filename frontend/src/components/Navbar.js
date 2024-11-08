@@ -20,7 +20,7 @@ const Navbar = () => {
           {/* Menú de Escritorio */}
           <div className="hidden md:flex items-center space-x-4">
             <a
-              href="https://github.com/lorenzosilva/Tarea-3-taller-integracion-segundo-semestre"
+              href="https://github.com"
               className="text-gray-600 hover:text-gray-900 transition"
               target="_blank"
               rel="noopener noreferrer"
@@ -53,7 +53,7 @@ const Navbar = () => {
           >
             <div className="px-2 pt-2 pb-3 space-y-1">
               <a
-                href="https://github.com/lorenzosilva/Tarea-3-taller-integracion-segundo-semestre"
+                href="https://github.com"
                 className="block px-3 py-2 rounded-md text-gray-600 hover:text-gray-900 transition flex items-center"
                 target="_blank"
                 rel="noopener noreferrer"
