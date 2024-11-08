@@ -10,7 +10,7 @@ const MovieList = ({ movies, onMovieClick }) => (
     animate={{ opacity: 1, y: 0 }}
     className="bg-white rounded-lg shadow-lg p-6"
   >
-    <h2 className="text-xl font-bold mb-4">Películas Disponibles</h2>
+    <h2 className="text-xl font-bold mb-4">Películas Disponibles (Hace click)</h2>
     <div className="space-y-2">
       {movies.map((movie, index) => (
         <motion.div

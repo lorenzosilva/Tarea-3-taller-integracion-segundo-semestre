@@ -12,15 +12,13 @@ import { motion } from 'framer-motion';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
-  const [responses, setResponses] = useState([]); // Cambiado de una sola respuesta a un array para chat
+  const [responses, setResponses] = useState([]); // Changed from single response to array for chat
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
-  const [relatedMovie] = useState(null);
-  const [selectedMovie, setSelectedMovie] = useState(null);
-  const [conversationHistory, setConversationHistory] = useState([]); // Nuevo estado para el historial de conversación
-  const [errorMessage, setErrorMessage] = useState(null); // Nuevo estado para mensajes de error
+  const [selectedMovie, setSelectedMovie] = useState(null); // State for selected movie
+  const [errorMessage, setErrorMessage] = useState(null); // State for error messages
 
-  // Obtener el estado de la API y las películas
+  // Fetch API status and movies
   useEffect(() => {
     let intervalId;
 
@@ -45,7 +43,7 @@ const App = () => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/movies`);
         setMovies(res.data);
-        setSelectedMovie(null); // Reiniciar película seleccionada
+        setSelectedMovie(null); // Reset selected movie
       } catch (error) {
         console.error('Error al obtener películas:', error);
       }
@@ -53,16 +51,16 @@ const App = () => {
 
     fetchStatus();
 
-    intervalId = setInterval(fetchStatus, 5000); // Consultar cada 5 segundos
+    intervalId = setInterval(fetchStatus, 5000); // Poll every 5 seconds
 
     return () => clearInterval(intervalId);
   }, []);
 
   /**
-   * Función para extraer el nombre de la película de la consulta con coincidencia parcial
-   * @param {string} query - La consulta del usuario
-   * @param {Array} moviesList - Lista de películas disponibles
-   * @returns {Object|null} - El objeto de la película coincidente o null
+   * Extracts the movie name from the query using partial matching.
+   * @param {string} query - The user's query.
+   * @param {Array} moviesList - List of available movies.
+   * @returns {Object|null} - The matched movie object or null.
    */
   const extractMovieName = (query, moviesList) => {
     const lowerQuery = query.toLowerCase();
@@ -81,87 +79,60 @@ const App = () => {
   /**
    * Maneja el envío de una consulta.
    * @param {string} query - La consulta del usuario.
-   * @param {string} mode - Modo de interacción: 'chat' o 'completion'.
    */
-  const handleSubmit = async (query, mode) => {
+  const handleSubmit = async (query) => {
     setLoading(true);
-    setErrorMessage(null); // Reiniciar cualquier mensaje de error previo
+    setErrorMessage(null); // Reset any previous error messages
 
-    // Extraer el nombre de la película basado en la consulta
-    const extractedMovie = extractMovieName(query, movies);
-    if (extractedMovie) {
-      setSelectedMovie(extractedMovie);
+    let payload = { query };
+
+    if (selectedMovie) {
+      // If a movie is selected from the frontend, include it in the payload
+      payload.selected_movie = selectedMovie.title;
     } else {
-      setSelectedMovie(null); // Reiniciar si no hay coincidencia de película
+      // Attempt to extract the movie from the query
+      const extractedMovie = extractMovieName(query, movies);
+      if (extractedMovie) {
+        payload.selected_movie = extractedMovie.title;
+        setSelectedMovie(extractedMovie); // Update the selected movie state
+      } else {
+        setSelectedMovie(null); // Reset if no movie is extracted
+      }
     }
 
     try {
-      // Preparar la carga útil basada en el modo de interacción
-      let payload = { query };
-
-      if (mode === 'chat') {
-        // Incluir historial de conversación para el modo chat
-        payload.conversation_history = conversationHistory;
-      }
-
-      // Realizar la solicitud POST al backend con tiempo de espera aumentado
+      // Make the POST request to the backend with the payload
       const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/query`,
         payload,
-        { timeout: 600000 } // 10 minutos
+        { timeout: 600000 } // 10 minutes
       );
       const answer = res.data.answer;
 
-      // Manejar la respuesta basada en el modo
-      if (mode === 'chat') {
-        // Actualizar el historial de conversación
-        const newConversation = [
-          ...conversationHistory,
-          { role: 'user', content: query },
-          { role: 'assistant', content: answer },
-        ];
-        setConversationHistory(newConversation);
-
-        // Actualizar las respuestas para mostrar toda la conversación
-        setResponses(newConversation);
-      } else {
-        // Para el modo completion, mostrar solo la última respuesta
-        setResponses([{ role: 'assistant', content: answer }]);
-      }
+      // Update the responses to display the answer
+      setResponses([{ role: 'assistant', content: answer }]);
     } catch (error) {
       console.error('Error al obtener la respuesta:', error);
-      // Manejar errores de forma adecuada
-      if (mode === 'chat') {
-        const errorMessage =
-          error.response && error.response.status === 504
-            ? 'Tiempo de espera agotado. Por favor, intenta de nuevo más tarde.'
-            : 'Lo siento, hubo un error al procesar tu solicitud.';
-        const newConversation = [
-          ...conversationHistory,
-          { role: 'user', content: query },
-          { role: 'assistant', content: errorMessage },
-        ];
-        setConversationHistory(newConversation);
-        setResponses(newConversation);
+      // Handle errors appropriately
+      if (error.response && error.response.status === 504) {
+        setResponses([{ role: 'assistant', content: 'Tiempo de espera agotado. Por favor, intenta de nuevo más tarde.' }]);
+        setErrorMessage('Tiempo de espera agotado. Por favor, intenta de nuevo más tarde.');
       } else {
-        const errorMsg =
-          error.response && error.response.status === 504
-            ? 'Tiempo de espera agotado. Por favor, intenta de nuevo más tarde.'
-            : 'Lo siento, hubo un error al procesar tu solicitud.';
-        setResponses([{ role: 'assistant', content: errorMsg }]);
+        setResponses([{ role: 'assistant', content: 'Ocurrió un error al procesar tu consulta.' }]);
+        setErrorMessage('Ocurrió un error.');
       }
-      setErrorMessage(
-        error.response && error.response.status === 504
-          ? 'Tiempo de espera agotado. Por favor, intenta de nuevo más tarde.'
-          : 'Ocurrió un error.'
-      );
     }
 
     setLoading(false);
   };
 
+  /**
+   * Handles the click event on a movie from the list.
+   * @param {Object} movie - The clicked movie object.
+   */
   const handleMovieClick = (movie) => {
     setSelectedMovie(movie);
+    setResponses([]); // Clear previous responses when a new movie is selected
   };
 
   return (
@@ -204,7 +175,7 @@ const App = () => {
                   </motion.div>
                 )}
                 {/* Mostrar respuestas */}
-                {responses.length > 0 && !loading && <ResponseCard responses={responses} movie={relatedMovie} />}
+                {responses.length > 0 && !loading && <ResponseCard responses={responses} movie={selectedMovie} />}
                 {/* Mostrar detalles de la película seleccionada */}
                 {selectedMovie && <MovieDetails movie={selectedMovie} />}
                 {/* Mostrar mensajes de error */}

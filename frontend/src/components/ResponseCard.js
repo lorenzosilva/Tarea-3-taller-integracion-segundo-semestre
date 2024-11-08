@@ -35,7 +35,7 @@ const ResponseCard = ({ responses, movie }) => (
             className="w-24 h-36 object-cover rounded-lg shadow-md"
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = `${process.env.REACT_APP_BACKEND_URL}/images/default.jpg`; // Asegurarse de que default.jpg exista
+              e.target.src = `${process.env.REACT_APP_BACKEND_URL}/images/default.jpg`; // Ensure default.jpg exists
             }}
           />
           <div>
